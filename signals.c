@@ -2,15 +2,12 @@
 
 void sigint_handler(int signal)
 {
-    printf("wtf\n");
-    if (signal)
-        system("./minishell");
+    printf("Signal KIller %d\n", signal);
+    main();
 }
 
 int arm_signals()
 {
-    //fsdafasdasffa
-    //changesgsgseges
     signal(SIGINT, sigint_handler);
     return (0);
 }
