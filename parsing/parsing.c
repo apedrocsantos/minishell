@@ -24,16 +24,18 @@ char    *treat_str(char *line, char aspas, int i, int j)
         if (!aspas && line[i] && (line[i] == '"' || line[i] == '\''))
         {
             aspas = line[i++];
+            newline[j++] = aspas;
             while (line[i] != aspas)
             {
                 if (line[i] == '\0')
                     return ("{ERROR}");
                 newline[j++] = line[i++];
             }
+            newline[j++] = aspas;
             aspas = 0;
             i++;
         }
-        else if (aspas == 0 && token(line, i) != 0)
+        else if (!aspas && token(line, i) != 0)
         {
             newline[j++] = 2;
             newline[j++] = line[i];
@@ -42,7 +44,7 @@ char    *treat_str(char *line, char aspas, int i, int j)
             newline[j++] = 2;
             i++;
         }
-        else if(aspas == 0 && line[i] == ' ')
+        else if(!aspas && line[i] == ' ')
         {
             newline[j++] = 2;
             i++;
@@ -78,12 +80,15 @@ void parsing(t_command_list *cmd_lst, char **splitter, int i)
     int j;
     
     j = 0;
+    // if (!is_valid_command(splitter[i++]))
+    //     exit(-1);
     while (splitter[i] && !z_cmp(splitter[i], "|") && !z_cmp(splitter[i], ";"))
     {
         if (token(splitter[i], 0) != 0 && splitter[i + 1])
         {
             cmd_lst->arg[j].token = splitter[i + 1];
             cmd_lst->arg[j].type = token(splitter[i], 0);
+            printf("%d %s\n",cmd_lst->arg[j].type, cmd_lst->arg[j].token);
             i++;
         }
         else

@@ -82,6 +82,7 @@ typedef struct s_command_list
 }							t_command_list;
 
 void						print_struct(t_command_list *lst);
+void 						expand_var(t_data *data, char *splitter, int i, int c);
 int							token(char *line, int i);
 int							ft_strleni(char **splitter, int i);
 int							z_cmp(char *str, char *cmp);

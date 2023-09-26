@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: eportela <eportela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/26 10:13:59 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:16:33 by eportela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,19 @@ int	main(int ac, char **av, char **envp)
 				}
 				changes = treat_str(line, 0, 0, 0);
 				splitter = ft_split(changes, 2);
+				int c = 0;
+				while (splitter[c])
+					printf("aoidsnfoiadsnfioa: %s\n", splitter[c++]);
+				expand_var(&data, splitter, 0 , 0);
 				cmd_lst = malloc(sizeof(t_command_list));
 				cmd_lst->arg = malloc(sizeof(t_arg) * (ft_strleni(splitter, 0)
 						+ 1));
 				parsing(cmd_lst, splitter, 0);
-				check_cmd(&data, cmd_lst, &data.pipes);
+				//check_cmd(&data, cmd_lst, &data.pipes);
 				free_all(cmd_lst, changes, splitter);
+				c = 0;
+				while (splitter[c])
+					printf("aoidsnfoiadsnfioa: %s\n", splitter[c++]);
 			}
 		}
 		free(line);
