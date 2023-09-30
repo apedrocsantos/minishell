@@ -64,6 +64,6 @@ fclean:
 
 re: fclean all
 
-r: re && clear && ./minisheel
+r: $(NAME)
 
 .PHONY: all clean fclean re r

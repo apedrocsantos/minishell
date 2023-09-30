@@ -86,14 +86,14 @@ void parsing(t_command_list *cmd_lst, char **splitter, int i)
     {
         if (token(splitter[i]) != 0 && splitter[i + 1])
         {
-            cmd_lst->arg[j].token = splitter[i + 1];
+            cmd_lst->arg[j].token = ft_strdup(splitter[i + 1]);
             cmd_lst->arg[j].type = token(splitter[i]);
             printf("%d %s\n",cmd_lst->arg[j].type, cmd_lst->arg[j].token);
             i++;
         }
         else
         {
-            cmd_lst->arg[j].token = splitter[i];
+            cmd_lst->arg[j].token = ft_strdup(splitter[i]);
             cmd_lst->arg[j].type = token(splitter[i]);
         }
         j++;
