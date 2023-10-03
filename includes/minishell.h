@@ -116,7 +116,7 @@ void						free_pairs(t_pair *pair);
 void						sort_list(t_pair *export);
 int							print_syntax_error(char c);
 int							print_file_error(char *s1, char *s2);
-int							check_unclosed(t_data *data, char *str);
+int							check_parse_errors(t_data *data, char *str);
 void						terminal_prompt(void);
 int							print_parse_error(char c);
 char						*treat_str(char *line, char aspas, int j);
@@ -124,13 +124,12 @@ int							mini_heredoc(t_data *data, char *str);
 int							check_cmd(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes);
 char						*get_next_line(int fd);
-int							token_error(t_data *data, char *str);
+int							token_error(t_data *data, char *str, int *i);
 char						**get_arg_list(t_arg *arg);
 int							open_file(int *fd, char *filename, int flags,
 								int perms);
 void						revert_fds(t_command_list *cmd_lst);
-int							check_path(t_data *data, t_command_list *cmd_lst,
-								char *str);
+int							check_path(t_data *data, t_command_list *cmd_lst, char **str);
 void						free_data(t_data *data);
 void						free_args(t_arg *arg);
 void						free_cmd(char **arg_list, t_command_list *cmd_lst,

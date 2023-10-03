@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 12:24:29 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:27:24 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ void	wait_for_execve(t_data *data, int *status)
 	while (pid->value != 0)
 	{
 		waitpid(pid->value, status, 0);
-		printf("%d finished\n", pid->value);
 		if (pid->value == data->pid->value && pid->last)
 			data->exit_status = WEXITSTATUS(*status);
 		pid = pid->next;
@@ -155,8 +154,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 		init_cmd_lst(cmd_lst);
 		// expand(cmd_lst->arg);
 		arg_list = get_arg_list(cmd_lst->arg);
-		if (arg_list)
-			check_path(data, cmd_lst, *arg_list);
+		check_path(data, cmd_lst, arg_list);
 		if (check_fds(data, cmd_lst, pipes, 0) != 0)
 		{
 			if (pipes->open)

@@ -10,3 +10,5 @@ Empty command ("" or "" echo...) should return error
 cat /dev/random | head
 ; should syntax error
 cd -
+export HELLO="123 A-"
+exit builtin

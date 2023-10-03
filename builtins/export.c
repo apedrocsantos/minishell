@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/02 10:01:57 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:43:58 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ int	export(t_data *data, char **str)
 	t_pair	*env;
 	t_pair	*exported_vars;
 	int		i;
+	int j;
 
 	env = data->env;
 	exported_vars = data->exported_vars;
@@ -171,8 +172,14 @@ int	export(t_data *data, char **str)
 		return (print_sorted_all(env, exported_vars));
 	while (str[++i])
 	{
-		if (!ft_isalnum(*str[i]) && *str[i] != '_')
+		if (!ft_isalpha(*str[i]))
 			return (print_export_error(data, str[i]));
+		j = -1;
+		while (str[i][++j])
+		{
+			if (!ft_isalnum(str[i][j]) && str[i][j] != '_' && str[i][j] != '=')
+				return (print_export_error(data, str[i]));
+		}
 		if (!ft_strchr(str[i], '=') && (!check_dupes(env, str[i])
 				&& !check_dupes(exported_vars, str[i])))
 			return (add_to_list(str[i], exported_vars));

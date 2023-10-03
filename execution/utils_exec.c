@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/01 09:00:40 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:08:51 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char **get_path(t_data *data)
 	return (NULL);
 }
 
-int	check_path(t_data *data, t_command_list *cmd_lst, char *str)
+int	check_path(t_data *data, t_command_list *cmd_lst, char **str)
 {
 	int i;
 	char *temp;
@@ -96,16 +96,13 @@ int	check_path(t_data *data, t_command_list *cmd_lst, char *str)
 	(void) data;
 	data->path = get_path(data);
 	char **path = data->path;
-	if (!*path)
-	{
-		// fprintf(stderr, "PATH not found\n");
+	if (!*path || !str)
 		return(0);
-	}
 	path_to_test = NULL;
 	i = 0;
-	if (*str == '/')
+	if (**str == '/')
 	{
-		cmd_lst->exec_path = ft_strdup(str);
+		cmd_lst->exec_path = ft_strdup(*str);
 		return (0);
 	}
 	while (path[i])
@@ -114,7 +111,7 @@ int	check_path(t_data *data, t_command_list *cmd_lst, char *str)
 			temp = ft_strjoin(path[i], "/");
 		else
 			temp = ft_strdup(path[i]);
-		path_to_test = ft_strjoin(temp, str);
+		path_to_test = ft_strjoin(temp, *str);
 		free(temp);
 		if (access(path_to_test, X_OK | F_OK) == 0)
 		{

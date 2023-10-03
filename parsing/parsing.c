@@ -88,7 +88,6 @@ void parsing(t_command_list *cmd_lst, char **splitter, int i)
         {
             cmd_lst->arg[j].token = ft_strdup(splitter[i + 1]);
             cmd_lst->arg[j].type = token(splitter[i]);
-            printf("%d %s\n",cmd_lst->arg[j].type, cmd_lst->arg[j].token);
             i++;
         }
         else

@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 12:28:19 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:52:32 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,16 @@ void	minishell(t_data *data, char *line)
 	while (data->exit == 0)
 	{
 		if (!line)
-		{
-			printf("new prompt\n");
 			line = readline("minishell$>");
-		}
 		if (!line)
 		{
 			data->exit = 1;
-			printf("EXITING %d\n", data->exit);
 			exit_builtin(data, NULL);
-			// exit(1);
 		}
 		else
 		{
 			add_history(line);
-			if (!token_error(data, line) && !check_unclosed(data, line))
+			if (!check_parse_errors(data, line))
 			{
 				changes = treat_str(line, 0, 0);
 				splitter = ft_split(changes, 2);
@@ -78,7 +73,6 @@ void	minishell(t_data *data, char *line)
 				free_all(cmd_lst, changes, splitter);
 			}
 		}
-		printf("data->exit after %d\n", data->exit);
 		free(line);
 		line = NULL;
 	}
@@ -87,6 +81,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char *line;
 	t_data data;
+	int exit_status;
 
 	line = NULL;
 	g_signal = 0;
@@ -98,5 +93,7 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 	minishell(&data, line);
+	exit_status = data.exit_status;
 	free_data(&data);
+	return(exit_status);
 }

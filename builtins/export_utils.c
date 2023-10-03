@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 17:57:33 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/01 18:12:54 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:37:58 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	print_export_error(t_data *data, char *str)
 {
-	ft_putstr_fd("minishell: export: `", 1);
-	ft_putstr_fd(str, 1);
-	ft_putendl_fd("': not a valid identifier", 1);
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putendl_fd("': not a valid identifier", 2);
 	data->exit_status = 1;
 	return (0);
 }

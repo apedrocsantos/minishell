@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_unclosed.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:04:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/27 15:15:10 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 15:54:56 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,62 +19,57 @@
 
 #include "minishell.h"
 
-// int	check_parenthesis(char *str)
-// {
-// 	char	*tester;
-// 	int		i;
-// 	int		j;
+int	check_end_of_command(t_data *data, char *str)
+{
+	int	i;
 
-// 	i = 0;
-// 	tester = ft_strdup(str);
-// 	while (tester[i] == ' ')
-// 		i++;
-// 	if (*tester == ')')
-// 		return (print_syntax_error(')'));
-// 	while (tester[i])
-// 	{
-// 		if (tester[i++] == '(')
-// 		{
-// 			j = i;
-// 			while (tester[j++])
-// 			{
-// 				if (tester[j] == ')')
-// 				{
-// 					tester[j] = 2;
-// 					break;
-// 				}
-// 			}
-// 		}
-// 	}
-// 	printf("%s\n", tester);
-// 	free(tester);
-// 	return (0);
-// }
+	i = ft_strlen(str);
+	i--;
+	while (str[i] && str[i] != '\'' && str[i] != '"')
+	{
+		while (str[i] == ' ')
+			i--;
+		if (!str[i])
+			break ;
+		if (ft_strchr("<>|", str[i]))
+		{
+			data->exit_status = 2;
+			return (print_syntax_error(str[i + 1]));
+		}
+		break ;
+	}
+	return (0);
+}
 
-int	check_unclosed(t_data *data, char *str)
+int	check_parse_errors(t_data *data, char *str)
 {
 	char	c;
 	int		i;
 
-	c = 0;
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
-		if (str[i] == '"' || str[i] == '\'')
-			c = str[i];
-		if (c)
+		c = 0;
+		if (token_error(data, str, &i))
+			return(0);
+		if (str[i])
 		{
-			while (str[++i])
-				if (str[i] == c)
-					break ;
-			if (str[i] != c)
+			c = str[i];
+			while (str[i] != c)
+				i++;
+			if (str[i] && str[i] != c)
 			{
-				data->exit_status = 2;	
+				data->exit_status = 2;
 				return (print_syntax_error(c));
 			}
-			c = 0;
+			else
+				break;
 		}
+		else
+			break;
+		i++;
 	}
+	return (check_end_of_command(data, str));
 	return (0);
 }
 
