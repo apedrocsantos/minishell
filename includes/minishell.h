@@ -142,5 +142,9 @@ size_t						len_to_char(char *str, char c);
 void						free_path(char **path);
 void						sigintchild_handler(int singal);
 void						expand(t_arg *arg);
+int							replace_var(t_pair *env, char *str);
+int						add_to_list(char *str, t_pair *exported_vars);
+int							check_dupes(t_pair *env, char *str);
+int							print_export_error(t_data *data, char *str);
 
 #endif

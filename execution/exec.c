@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/30 16:38:57 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:51:14 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 	while (cmd_lst)
 	{
 		init_cmd_lst(cmd_lst);
-		expand(cmd_lst->arg);
+		// expand(cmd_lst->arg);
 		arg_list = get_arg_list(cmd_lst->arg);
 		if (arg_list)
 			check_path(data, cmd_lst, *arg_list);
@@ -160,13 +160,12 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 		}
 		else if (arg_list && !is_builtin(data, arg_list))
 			execute_execve(data, cmd_lst, arg_list);
+		revert_fds(cmd_lst);
 		free_path(data->path);
 		free_cmd(arg_list, cmd_lst, &data->heredoc);
-		revert_fds(cmd_lst);
 		pipes = pipes->next;
 		cmd_lst = cmd_lst->next;
 	}
-	data->pipes.open = 0;
 	wait_for_execve(data, &status);
 	return (data->exit_status);
 }

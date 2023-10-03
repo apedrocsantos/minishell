@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/30 16:25:22 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/01 09:00:40 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,14 @@ void	revert_fds(t_command_list *cmd_lst)
 
 char **get_path(t_data *data)
 {
-	while (data->env)
+	t_pair *temp;
+
+	temp = data->env;
+	while (temp)
 	{
-		if (!ft_strncmp(data->env->key, "PATH=", 5))
-			return (ft_split(data->env->value, ':'));
-		data->env = data->env->next;
+		if (!ft_strncmp(temp->key, "PATH=", 5))
+			return (ft_split(temp->value, ':'));
+		temp = temp->next;
 	}
 	return (NULL);
 }

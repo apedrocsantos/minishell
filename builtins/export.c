@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/28 11:33:19 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:01:57 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ int	check_dupes(t_pair *env, char *str)
 	t_pair	*temp;
 	int		str_size;
 
+	if (!env || !env->key)
+	{
+		return (0);
+	}
 	temp = env;
 	str_size = len_to_char(str, '=');
 	while (temp)
@@ -29,7 +33,7 @@ int	check_dupes(t_pair *env, char *str)
 	return (0);
 }
 
-void	add_to_list(char *str, t_pair *exported_vars)
+int	add_to_list(char *str, t_pair *exported_vars)
 {
 	t_pair	*temp;
 
@@ -52,12 +56,13 @@ void	add_to_list(char *str, t_pair *exported_vars)
 		temp->value = ft_strdup(ft_strchr(str, '=') + 1);
 	}
 	temp->next = NULL;
+	return (0);
 }
 
 int	replace_var(t_pair *env, char *str)
 {
 	t_pair	*temp;
-	char *temp_str;
+	char	*temp_str;
 
 	temp = env;
 	while (temp)
@@ -81,11 +86,9 @@ int	replace_var(t_pair *env, char *str)
 t_pair	*copy_list_all(t_pair *env, t_pair *exported_vars)
 {
 	t_pair	*temp_env;
-	t_pair	*export;
 	t_pair	*temp_export;
 
-	export = malloc(sizeof(t_pair));
-	temp_export = export;
+	temp_export = malloc(sizeof(t_pair));
 	temp_env = env;
 	while (temp_env)
 	{
@@ -114,7 +117,7 @@ t_pair	*copy_list_all(t_pair *env, t_pair *exported_vars)
 		else
 			temp_export->next = NULL;
 	}
-	return (export);
+	return (temp_export);
 }
 
 int	print_sorted_all(t_pair *env, t_pair *exported_vars)
@@ -127,8 +130,9 @@ int	print_sorted_all(t_pair *env, t_pair *exported_vars)
 	temp_export = export;
 	while (temp_export)
 	{
-		if (ft_strchr(temp_export->key, '=') && !*temp_export->value)
-			printf("declare -x %s\"\"\n", temp_export->key);
+		if (ft_strchr(temp_export->key, '='))
+			printf("declare -x %s\"%s\"\n", temp_export->key,
+				temp_export->value);
 		else
 			printf("declare -x %s%s\n", temp_export->key, temp_export->value);
 		temp_export = temp_export->next;
@@ -168,26 +172,16 @@ int	export(t_data *data, char **str)
 	while (str[++i])
 	{
 		if (!ft_isalnum(*str[i]) && *str[i] != '_')
-		{
-			ft_putstr_fd("minishell: export: `", 1);
-			ft_putstr_fd(str[i], 1);
-			ft_putendl_fd("': not a valid identifier", 1);
-		}
-		if (!ft_strchr(str[i], '='))
-		{
-			if ((!check_dupes(env, str[i]) && !exported_vars->key)
-				|| (exported_vars->key && !check_dupes(exported_vars, str[i])))
-				add_to_list(str[i], exported_vars);
-		}
-		else
-		{
-			if (check_dupes(env, str[i]))
-				replace_var(env, str[i]);
-			else if (exported_vars->key && check_dupes(exported_vars, str[i]))
-				replace_var(exported_vars, str[i]);
-			else
-				add_to_list(str[i], exported_vars);
-		}
+			return (print_export_error(data, str[i]));
+		if (!ft_strchr(str[i], '=') && (!check_dupes(env, str[i])
+				&& !check_dupes(exported_vars, str[i])))
+			return (add_to_list(str[i], exported_vars));
+		if (ft_strchr(str[i], '=') && check_dupes(env, str[i]))
+			return (replace_var(env, str[i]));
+		if (ft_strchr(str[i], '=') && check_dupes(exported_vars, str[i]))
+			return (replace_var(exported_vars, str[i]));
+		if (ft_strchr(str[i], '='))
+			return (add_to_list(str[i], exported_vars));
 	}
 	return (0);
 }

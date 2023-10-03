@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 21:07:29 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/29 06:08:07 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/09/30 22:15:17 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	exit_builtin(t_data *data, char **str)
 	}
 	else
 		data->exit = 0;
-	if (!str || !str[0])
+	if (!str || !*str)
 		return (data->exit_status);
 	i = -1;
 	while (str[0][++i])

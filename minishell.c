@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/30 17:42:43 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/01 17:35:59 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int		g_signal;
 void	init(t_data *data, char **envp)
 {
 	data->env = get_env(envp);
-	data->exit_status = 0;
-	data->exit = 0;
 	data->exported_vars = malloc(sizeof(t_pair));
 	data->exported_vars->key = NULL;
 	data->exported_vars->value = NULL;
@@ -31,6 +29,8 @@ void	init(t_data *data, char **envp)
 	data->pid = malloc(sizeof(t_pid));
 	data->pid->value = 0;
 	data->pid->next = NULL;
+	data->exit_status = 0;
+	data->exit = 0;
 	getcwd(data->cwd, PATH_MAX);
 }
 

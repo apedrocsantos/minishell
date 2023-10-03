@@ -19,6 +19,7 @@ SRCS =	parsing/parsing.c\
 		builtins/exit.c\
 		builtins/env.c\
 		builtins/export.c\
+		builtins/export_utils.c\
 		builtins/pwd.c\
 		builtins/unset.c\
 		execution/exec.c\
@@ -64,6 +65,7 @@ fclean:
 
 re: fclean all
 
-r: $(NAME)
+r:
+	$(MAKE) && clear && valgrind --leak-check=full ./$(NAME)
 
 .PHONY: all clean fclean re r

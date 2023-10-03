@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:43:40 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/28 11:51:11 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/01 17:18:57 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,30 @@ size_t	len_to_char(char *str, char c)
 
 int	remove_from_list(char *str, t_pair *pair)
 {
-	t_pair	*prev;
 	t_pair	*cur;
-	int strlen;
+	t_pair	*prev;
 
 	cur = pair;
 	prev = NULL;
-	strlen = ft_strlen(str);
 	while (cur)
 	{
-		if (!ft_strncmp(str, cur->key, strlen))
+		if (!ft_strncmp(str, cur->key, ft_strlen(str))
+			&& (!cur->key[ft_strlen(str)] || cur->key[ft_strlen(str)] == '='))
 		{
-			printf("removing %s\n", str);
+			free(cur->key);
+			free(cur->value);
 			if (!prev)
-				pair = pair->next;
+			{
+				prev = cur;
+				cur = cur->next;
+				free(prev);
+			}
 			else
 			{
 				prev->next = cur->next;
-				printf("should free %s\n", cur->key);
+				if (cur->next)
+					free(cur);
 			}
-			free(cur->key);
-			free(cur->value);
-			free(cur);
 			return (1);
 		}
 		prev = cur;
@@ -69,16 +71,17 @@ int	unset(t_data *data, char **str)
 		return (0);
 	while (str[++i])
 	{
-		if (!ft_isalnum(*str[i]) && (*str[i] != '_' || ft_strchr(str[i], '=')))
+		if ((!ft_isalnum(*str[i]) && *str[i] != '_') || ft_strchr(str[i], '='))
 		{
 			ft_putstr_fd("unset: ", 2);
 			ft_putstr_fd(str[i], 2);
 			ft_putendl_fd(": invalid parameter name", 2);
 		}
-		printf("RRRremoving %s\n", *str);
-		if (!remove_from_list(str[i], data->exported_vars))
+		else if (!remove_from_list(str[i], data->env))
+		{
 			if (data->exported_vars->key)
 				remove_from_list(str[i], data->exported_vars);
+		}
 	}
 	return (0);
 }

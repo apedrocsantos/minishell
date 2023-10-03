@@ -6,24 +6,24 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 16:56:07 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/28 09:41:27 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/09/30 22:11:31 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int get_length_to_char(char *str, char c)
-{
-	int len;
+// int get_length_to_char(char *str, char c)
+// {
+// 	int len;
 
-	if (!str)
-		return(0);
-	len = -1;
-	while (str[++len])
-		if(str[len] == c)
-			return(len);
-	return (0);
-}
+// 	if (!str)
+// 		return(0);
+// 	len = -1;
+// 	while (str[++len])
+// 		if(str[len] == c)
+// 			return(len);
+// 	return (0);
+// }
 
 void free_nodes(t_node *node)
 {
