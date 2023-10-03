@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/02 19:51:14 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 11:56:55 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,13 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args)
 		return (-1);
 	}
 	if (pid != 0)
+	{
+		g_signal = 1;
 		add_pid(data, pid, cmd_lst);
+	}
 	if (pid == 0)
 	{
-		signal(SIGINT, sigintchild_handler);
+		signal(SIGINT, SIG_DFL);
 		if (execve(cmd_lst->exec_path, args, NULL) == -1)
 		{
 			revert_fds(cmd_lst);
@@ -135,6 +138,7 @@ void	wait_for_execve(t_data *data, int *status)
 			data->exit_status = WEXITSTATUS(*status);
 		pid = pid->next;
 	}
+	g_signal = 0;
 	free_pid(data);
 }
 

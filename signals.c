@@ -9,14 +9,10 @@ void	terminal_prompt(void)
 	rl_redisplay();
 }
 
-void	sigintchild_handler(int signal)
-{
-	if (signal)
-		kill(0, SIGSEGV);
-}
-
 void	sigint_handler(int signal)
 {
-	if (signal)
+	if (signal && g_signal == 0)
 		terminal_prompt();
+	else
+		printf("\n");
 }
