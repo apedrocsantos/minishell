@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/01 17:35:59 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:28:19 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,21 @@ void	minishell(t_data *data, char *line)
 	char			*changes;
 	t_command_list	*cmd_lst;
 
-	while (!data->exit)
+	while (data->exit == 0)
 	{
 		if (!line)
-			line = readline("minishell$> ");
+		{
+			printf("new prompt\n");
+			line = readline("minishell$>");
+		}
 		if (!line)
+		{
+			data->exit = 1;
+			printf("EXITING %d\n", data->exit);
 			exit_builtin(data, NULL);
-		else if (line)
+			// exit(1);
+		}
+		else
 		{
 			add_history(line);
 			if (!token_error(data, line) && !check_unclosed(data, line))
@@ -70,6 +78,7 @@ void	minishell(t_data *data, char *line)
 				free_all(cmd_lst, changes, splitter);
 			}
 		}
+		printf("data->exit after %d\n", data->exit);
 		free(line);
 		line = NULL;
 	}

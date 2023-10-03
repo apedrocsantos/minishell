@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 11:56:55 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:24:29 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args)
 	}
 	if (pid != 0)
 	{
-		g_signal = 1;
+		g_signal++;
 		add_pid(data, pid, cmd_lst);
 	}
 	if (pid == 0)
@@ -134,11 +134,12 @@ void	wait_for_execve(t_data *data, int *status)
 	while (pid->value != 0)
 	{
 		waitpid(pid->value, status, 0);
+		printf("%d finished\n", pid->value);
 		if (pid->value == data->pid->value && pid->last)
 			data->exit_status = WEXITSTATUS(*status);
 		pid = pid->next;
+		g_signal--;
 	}
-	g_signal = 0;
 	free_pid(data);
 }
 
