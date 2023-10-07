@@ -11,9 +11,14 @@ void	terminal_prompt(void)
 
 void	sigint_handler(int signal)
 {
-	printf("%d\n", g_signal);
 	if (signal && g_signal == 0)
 		terminal_prompt();
 	else if (signal)
 		printf("\n");
+}
+
+void heredoc_sigint_handler(int signal)
+{
+	if (signal && !g_signal)
+		exit(1);
 }

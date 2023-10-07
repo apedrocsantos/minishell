@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:04:34 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/27 20:53:43 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:08:43 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_builtin(t_data *data, char **args)
 	functions[3] = "export";
 	functions[4] = "pwd";
 	functions[5] = "unset";
-    functions[6] = "exit";
+	functions[6] = "exit";
 	fun_ptr_arr[0] = cd;
 	fun_ptr_arr[1] = echo;
 	fun_ptr_arr[2] = env;

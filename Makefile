@@ -3,8 +3,7 @@ NAME = minishell
 SRCS =	parsing/parsing.c\
 		parsing/utils_parsing.c\
 		parsing/expand_parsing.c\
-		parsing/token_error.c\
-		parsing/check_unclosed.c\
+		parsing/check_parse_errors.c\
 		minishell.c\
 		signals.c\
 		utils/utils.c\
@@ -27,8 +26,6 @@ SRCS =	parsing/parsing.c\
 		execution/utils_exec.c\
 		execution/expand.c\
 		utils/free_data.c\
-		#parsing/check_unclosed.c\
-		#parsing/token_error.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -67,5 +64,8 @@ re: fclean all
 
 r:
 	$(MAKE) && clear && valgrind --leak-check=full ./$(NAME)
+
+f:
+	$(MAKE) && clear && valgrind --track-fds=yes ./$(NAME)
 
 .PHONY: all clean fclean re r

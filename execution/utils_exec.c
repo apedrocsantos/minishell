@@ -3,22 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 16:08:51 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/05 09:28:37 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_cmd(char **arg_list, t_command_list *cmd_lst, int *heredoc)
+void	free_cmd(char **arg_list, t_command_list *cmd_lst)
 {
-	if (*heredoc)
-	{
+	if (!access("heredoc_163465", O_RDONLY))
 		unlink("heredoc_163465");
-		*heredoc = 0;
-	}
 	if (arg_list)
 		free(arg_list);
 	free_args(cmd_lst->arg);

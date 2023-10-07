@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 21:07:29 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 17:49:23 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:08:53 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int check_number(t_data *data, char *str)
+static int	check_number(t_data *data, char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!ft_isdigit(*str) && *str != '+' && *str != '-')
@@ -36,12 +36,12 @@ static int check_number(t_data *data, char *str)
 			return (data->exit_status);
 		}
 	}
-	return(0);
+	return (0);
 }
 
 int	exit_builtin(t_data *data, char **str)
 {
-	unsigned char ret;
+	unsigned char	ret;
 
 	if (!data->pipes.open)
 	{
@@ -55,8 +55,8 @@ int	exit_builtin(t_data *data, char **str)
 	if (str[0] && str[1])
 	{
 		data->exit_status = 1;
-		return(ft_putendl_fd("minishell: exit: too many arguments", 2));
-		return(data->exit_status);
+		return (ft_putendl_fd("minishell: exit: too many arguments", 2));
+		return (data->exit_status);
 	}
 	if (check_number(data, *str))
 		return (0);

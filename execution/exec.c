@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 16:27:24 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:02:55 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	assign_fds(int in_fd, int out_fd)
 	return (0);
 }
 
-int	check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes, int i)
+int	check_fds(t_command_list *cmd_lst, t_pipe *pipes, int i)
 {
 	if ((cmd_lst->next || pipes->next->open))
 		do_pipes(cmd_lst, pipes);
@@ -61,7 +61,7 @@ int	check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes, int i)
 				return (print_file_error("minishell: ", cmd_lst->arg[i].token));
 		if (cmd_lst->arg[i].type == HEREDOC)
 		{
-			if (mini_heredoc(data, cmd_lst->arg[i].token))
+			if (mini_heredoc(cmd_lst->arg[i].token))
 				return (print_file_error("minishell: ", "heredoc"));
 			cmd_lst->in_fd = open("heredoc_163465", O_RDONLY | O_CLOEXEC);
 		}
@@ -117,6 +117,8 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args)
 		signal(SIGINT, SIG_DFL);
 		if (execve(cmd_lst->exec_path, args, NULL) == -1)
 		{
+			if (data->pipes.open)
+				close(data->pipes.fd[0]);
 			revert_fds(cmd_lst);
 			ft_putstr_fd(cmd_lst->arg->token, 2);
 			ft_putendl_fd(": command not found", 2);
@@ -155,7 +157,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 		// expand(cmd_lst->arg);
 		arg_list = get_arg_list(cmd_lst->arg);
 		check_path(data, cmd_lst, arg_list);
-		if (check_fds(data, cmd_lst, pipes, 0) != 0)
+		if (check_fds(cmd_lst, pipes, 0) != 0)
 		{
 			if (pipes->open)
 				close(pipes->fd[1]);
@@ -165,7 +167,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 			execute_execve(data, cmd_lst, arg_list);
 		revert_fds(cmd_lst);
 		free_path(data->path);
-		free_cmd(arg_list, cmd_lst, &data->heredoc);
+		free_cmd(arg_list, cmd_lst);
 		pipes = pipes->next;
 		cmd_lst = cmd_lst->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 17:52:32 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/05 09:29:24 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	init(t_data *data, char **envp)
 	data->pipes.open = 0;
 	data->pipes.next = malloc(sizeof(t_pipe));
 	data->pipes.next->next = &data->pipes;
-	data->heredoc = 0;
 	data->path = NULL;
 	data->pid = malloc(sizeof(t_pid));
 	data->pid->value = 0;
@@ -52,7 +51,7 @@ void	minishell(t_data *data, char *line)
 	while (data->exit == 0)
 	{
 		if (!line)
-			line = readline("minishell$>");
+			line = readline("minishell$ ");
 		if (!line)
 		{
 			data->exit = 1;
