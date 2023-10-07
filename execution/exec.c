@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 10:02:55 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/07 12:21:15 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_fds(t_command_list *cmd_lst, t_pipe *pipes, int i)
 				return (print_file_error("minishell: ", cmd_lst->arg[i].token));
 		if (cmd_lst->arg[i].type == HEREDOC)
 		{
-			if (mini_heredoc(cmd_lst->arg[i].token))
+			if (mini_heredoc(cmd_lst->arg[i].token, cmd_lst))
 				return (print_file_error("minishell: ", "heredoc"));
 			cmd_lst->in_fd = open("heredoc_163465", O_RDONLY | O_CLOEXEC);
 		}
@@ -154,7 +154,6 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 	while (cmd_lst)
 	{
 		init_cmd_lst(cmd_lst);
-		// expand(cmd_lst->arg);
 		arg_list = get_arg_list(cmd_lst->arg);
 		check_path(data, cmd_lst, arg_list);
 		if (check_fds(cmd_lst, pipes, 0) != 0)

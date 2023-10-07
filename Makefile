@@ -2,7 +2,6 @@ NAME = minishell
 
 SRCS =	parsing/parsing.c\
 		parsing/utils_parsing.c\
-		parsing/expand_parsing.c\
 		parsing/check_parse_errors.c\
 		minishell.c\
 		signals.c\
@@ -65,7 +64,7 @@ re: fclean all
 r:
 	$(MAKE) && clear && valgrind --leak-check=full ./$(NAME)
 
-f:
+fd:
 	$(MAKE) && clear && valgrind --track-fds=yes ./$(NAME)
 
 .PHONY: all clean fclean re r

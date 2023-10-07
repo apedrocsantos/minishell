@@ -98,7 +98,7 @@ int							print_export_error(t_data *data, char *str);
 size_t						len_to_char(char *str, char c);
 
 /*PARSING*/
-int							check_parse_errors(t_data *data, char *str);
+int							check_parse_errors(t_data *data, char *str, int i);
 void						parsing(t_command_list *cmd_lst, char **splitter,
 								int i);
 char						*treat_str(char *line, char aspas, int j);
@@ -126,7 +126,7 @@ void						sort_list(t_pair *export);
 int							print_syntax_error(t_data *data, char c);
 int							print_file_error(char *s1, char *s2);
 void						terminal_prompt(void);
-int							mini_heredoc(char *str);
+int							mini_heredoc(char *str, t_command_list *cmd_lst);
 int							check_cmd(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes);
 char						*get_next_line(int fd);

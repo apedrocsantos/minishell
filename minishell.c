@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 09:29:24 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/07 11:52:34 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	minishell(t_data *data, char *line)
 		else
 		{
 			add_history(line);
-			if (!check_parse_errors(data, line))
+			if (!check_parse_errors(data, line, 0))
 			{
 				changes = treat_str(line, 0, 0);
 				splitter = ft_split(changes, 2);
