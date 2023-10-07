@@ -29,11 +29,11 @@ char *search_key(t_data *data, char *str)
     temp = data->env;
     while (temp)
     {
-        printf("Reading through: %s. searching for %s\n", temp->key, &str[1]);
+        // printf("Reading through: %s. searching for %s\n", temp->key, &str[1]);
         if (ft_strchr(str, '$'))
-            if (*(str + 1) && !ft_strncmp(&str[1], temp->key, ft_strlen(temp->key)))
+            if (*(str + 1) && !ft_strncmp(&str[1], temp->key, ft_strlen(&str[1])))
             {
-                printf("String being sent: {%s%s}\nReturn Value: {%s}\n", &str[1], temp->key, temp->value);
+                // printf("String being sent: {%s%s}\nReturn Value: {%s}\n", &str[1], temp->key, temp->value);
                 return (temp->value);
             }
         temp = temp->next;
@@ -49,9 +49,9 @@ char *solve_expansion(t_data *data, char *temp)
     char **trying;
 
     trying = ft_split(temp, 1);
-    int a = -1;
-    while (trying[++a] != NULL)
-        printf("splitted string: %s\n", trying[a]);
+    // int a = -1;
+    // while (trying[++a] != NULL)
+    //     printf("splitted string: %s\n", trying[a]);
     free(temp);
     final = NULL;
     i = -1;
@@ -119,7 +119,7 @@ char *format_expansion(t_data *data, t_arg *arg, int i, int c, char flag)
 void    expand_struct(t_data *data, t_command_list *cmd_lst)
 {
     //printf("Entering expand_struct()\n");
-    print_struct(cmd_lst);
+    // print_struct(cmd_lst);
     int i = -1;
     while (cmd_lst)
     {
