@@ -24,19 +24,19 @@ char *c_strjoin(char *str, char *s)
 char *search_key(t_data *data, char *str)
 {
    // printf("entering search_key\n");
-    t_data *temp;
+    t_pair *temp;
 
-    temp = data;
-    while (temp->env)
+    temp = data->env;
+    while (temp)
     {
-        //printf("Reading through: %s\n", temp->env->key);
+        printf("Reading through: %s. searching for %s\n", temp->key, &str[1]);
         if (ft_strchr(str, '$'))
-            if (*(str + 1) && !ft_strncmp(&str[1], temp->env->key, ft_strlen(temp->env->key)))
+            if (*(str + 1) && !ft_strncmp(&str[1], temp->key, ft_strlen(temp->key)))
             {
-                //printf("String being sent: {%s}\nReturn Value: {%s}\n", &str[1], temp->env->value);
-                return (temp->env->value);
+                printf("String being sent: {%s%s}\nReturn Value: {%s}\n", &str[1], temp->key, temp->value);
+                return (temp->value);
             }
-        temp->env = temp->env->next;
+        temp = temp->next;
     }
     return (NULL);
 }
@@ -51,7 +51,7 @@ char *solve_expansion(t_data *data, char *temp)
     trying = ft_split(temp, 1);
     int a = -1;
     while (trying[++a] != NULL)
-        //printf("splitted string: %s\n", trying[a]);
+        printf("splitted string: %s\n", trying[a]);
     free(temp);
     final = NULL;
     i = -1;
@@ -89,6 +89,11 @@ char *format_expansion(t_data *data, t_arg *arg, int i, int c, char flag)
             temp[c++] = 1;
             temp[c++] = arg->token[i];
         }
+        else if (arg->token[i] == '\"')
+        {
+            temp[c++] = 1;
+            temp[c++] = arg->token[i];
+        }
         else if (arg->token[i] == ' ' && flag)
         {
             temp[c++] = '=';
@@ -96,10 +101,10 @@ char *format_expansion(t_data *data, t_arg *arg, int i, int c, char flag)
             temp[c++] = arg->token[i];
             flag = 0;
         }
-        else if ((arg->token[i] == ' ' || arg->token[i] == '\"') && !flag)
+        else if ((arg->token[i] == ' ' || arg->token[i] == '\"'))
         {
-            temp[c++] = arg->token[i];
             temp[c++] = 1;
+            temp[c++] = arg->token[i];
         }
         else
             temp[c++] = arg->token[i];

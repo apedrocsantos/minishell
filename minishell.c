@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/07 11:52:34 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/07 12:35:59 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	minishell(t_data *data, char *line)
 				cmd_lst->arg = malloc(sizeof(t_arg) * (ft_strleni(splitter, 0)
 						+ 1));
 				parsing(cmd_lst, splitter, 0);
+				expand_struct(data, cmd_lst);
 				check_cmd(data, cmd_lst, &data->pipes);
 				free_all(cmd_lst, changes, splitter);
 			}

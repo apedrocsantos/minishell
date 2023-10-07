@@ -4,6 +4,7 @@ SRCS =	parsing/parsing.c\
 		parsing/utils_parsing.c\
 		parsing/check_parse_errors.c\
 		minishell.c\
+		expand/e_parsing.c\
 		signals.c\
 		utils/utils.c\
 		utils/utils2.c\

@@ -149,5 +149,6 @@ int							replace_var(t_pair *env, char *str);
 int							add_to_list(char *str, t_pair *exported_vars);
 int							check_dupes(t_pair *env, char *str);
 void						heredoc_sigint_handler(int signal);
+void    expand_struct(t_data *data, t_command_list *cmd_lst);
 
 #endif
