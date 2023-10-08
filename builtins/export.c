@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 10:08:59 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/08 12:24:08 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ t_pair	*copy_list_all(t_pair *env, t_pair *exported_vars)
 {
 	t_pair	*temp_env;
 	t_pair	*temp_export;
+	t_pair *rtn;
 
 	temp_export = malloc(sizeof(t_pair));
+	rtn = temp_export;
 	temp_env = env;
 	while (temp_env)
 	{
@@ -117,7 +119,7 @@ t_pair	*copy_list_all(t_pair *env, t_pair *exported_vars)
 		else
 			temp_export->next = NULL;
 	}
-	return (temp_export);
+	return (rtn);
 }
 
 int	print_sorted_all(t_pair *env, t_pair *exported_vars)
@@ -126,8 +128,10 @@ int	print_sorted_all(t_pair *env, t_pair *exported_vars)
 	t_pair	*temp_export;
 
 	export = copy_list_all(env, exported_vars);
-	sort_list(export);
+	sort_list(&export);
+	printf("%s\n", export->key);
 	temp_export = export;
+	// printf("HEEEEE %s", temp_export->key);
 	while (temp_export)
 	{
 		if (ft_strchr(temp_export->key, '='))

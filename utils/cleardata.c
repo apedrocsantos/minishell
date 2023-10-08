@@ -40,10 +40,23 @@ void	free_args(t_arg *arg)
 	free(arg);
 }
 
+void free_splitter(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		free (str[i]);
+		i++;
+	}
+	free(str);
+}
+
 void	free_all(t_command_list *cmd_lst, char *changes, char **splitter)
 {
 	free_linkedlst(cmd_lst);
 	free(changes);
-	free(splitter);
+	free_splitter(splitter);
 	// free history?
 }

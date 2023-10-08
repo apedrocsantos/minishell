@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:04:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/07 11:52:44 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:13:42 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	token_error(t_data *data, char *str, int *i)
 			return (print_syntax_error(data, str[*i]));
 		if (!ft_strncmp(&str[*i], "<<", 2) || !ft_strncmp(&str[*i], ">>", 2))
 			j += 2;
-		else if (ft_strchr("<>|", str[*i]))
+		else if (ft_strchr("<>", str[*i]))
 			j += 1;
 		if (j && check_unexpected_token(data, &str[*i + j]))
-			return (1);
+			return (2);
 		(*i)++;
 	}
 	return (0);
@@ -89,7 +89,7 @@ int	check_parse_errors(t_data *data, char *str, int i)
 
 	while (str[i] && str[i] == ' ')
 		i++;
-	if (str[i] && ft_strchr("<>|", str[i]))
+	if (str[i] && str[i] == '|')
 		return (print_syntax_error(data, str[i]));
 	while (str[i])
 	{

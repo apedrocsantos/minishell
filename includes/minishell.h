@@ -107,7 +107,10 @@ int							token(char *line);
 
 /*EXECUTION*/
 
-
+int	do_pipes(t_command_list *cmd_lst, t_pipe *pipes);
+int	assign_fds(int in_fd, int out_fd);
+void	add_pid(t_data *data, int pid, t_command_list *cmd_lst);
+void	free_pid(t_data *data);
 
 void						print_struct(t_command_list *lst);
 int							z_cmp(char *str, char *cmp);
@@ -122,11 +125,11 @@ void						cleanup(t_data *data);
 void						free_nodes(t_node *node);
 void						print_pairs(t_pair *pair);
 void						free_pairs(t_pair *pair);
-void						sort_list(t_pair *export);
+void						sort_list(t_pair **export);
 int							print_syntax_error(t_data *data, char c);
 int							print_file_error(char *s1, char *s2);
 void						terminal_prompt(void);
-int							mini_heredoc(char *str, t_command_list *cmd_lst);
+int							mini_heredoc(t_data *data, char *str, t_command_list *cmd_lst);
 int							check_cmd(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes);
 char						*get_next_line(int fd);
@@ -135,12 +138,12 @@ int							open_file(int *fd, char *filename, int flags,
 								int perms);
 void						revert_fds(t_command_list *cmd_lst);
 int							check_path(t_data *data, t_command_list *cmd_lst,
-								char **str);
+								char **str, int i);
 void						free_data(t_data *data);
 void						free_args(t_arg *arg);
 void						free_cmd(char **arg_list, t_command_list *cmd_lst);
 void						init_cmd_lst(t_command_list *cmd_lst);
-int							check_fds(t_command_list *cmd_lst, t_pipe *pipes,
+int							check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes,
 								int i);
 void						free_path(char **path);
 void						sigintchild_handler(int singal);

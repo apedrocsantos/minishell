@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:00:23 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/19 20:16:23 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/08 12:23:43 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,14 @@ t_pair	*copy_list(t_pair *env)
 	return (export);
 }
 
-void	print_sorted(t_pair *env)
-{
-	t_pair	*export;
-	t_pair	*temp_export;
-
-	export = copy_list(env);
-	sort_list(export);
-	temp_export = export;
-	while (temp_export)
-	{
-		if (ft_strchr(temp_export->key, '=') && !*temp_export->value)
-			printf("declare -x %s\"\"\n", temp_export->key);
-		else
-			printf("declare -x %s%s\n", temp_export->key, temp_export->value);
-		temp_export = temp_export->next;
-	}
-	free_pairs(export);
-}
-
-void	sort_list(t_pair *export)
+void	sort_list(t_pair **export)
 {
 	t_pair	*cur;
 	t_pair	*next;
 	char	*temp;
 
-	cur = export;
-	next = export->next;
+	cur = *export;
+	next = cur->next;
 	while (cur && next)
 	{
 		if (ft_strncmp(cur->key, next->key, ft_strlen(cur->key)) > 0)
@@ -74,8 +55,8 @@ void	sort_list(t_pair *export)
 			temp = cur->value;
 			cur->value = next->value;
 			next->value = temp;
-			cur = export;
-			next = export->next;
+			cur = *export;
+			next = cur->next;
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 06:47:38 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/03 16:02:42 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/08 10:25:06 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_data(t_data *data)
 {
 	free(data->pid);
 	free(data->pipes.next);
+	free_path(data->path);
 	free_pair(data->env);
 	free_pair(data->exported_vars);
 }

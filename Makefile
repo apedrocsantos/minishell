@@ -24,7 +24,7 @@ SRCS =	parsing/parsing.c\
 		execution/exec.c\
 		execution/heredoc.c\
 		execution/utils_exec.c\
-		execution/expand.c\
+		execution/fds_exec.c\
 		utils/free_data.c\
 
 OBJS = $(SRCS:.c=.o)

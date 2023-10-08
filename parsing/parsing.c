@@ -80,8 +80,6 @@ void parsing(t_command_list *cmd_lst, char **splitter, int i)
     int j;
     
     j = 0;
-    // if (!is_valid_command(splitter[i++]))
-    //     exit(-1);
     while (splitter[i] && !z_cmp(splitter[i], "|") && !z_cmp(splitter[i], ";"))
     {
         if (token(splitter[i]) != 0 && splitter[i + 1])

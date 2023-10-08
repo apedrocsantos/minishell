@@ -21,4 +21,6 @@ void heredoc_sigint_handler(int signal)
 {
 	if (signal && !g_signal)
 		exit(1);
+	// if (signal && g_signal == 0)
+	// 	printf("\n");
 }
