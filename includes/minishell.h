@@ -118,10 +118,8 @@ void						free_all(t_command_list *cmd_lst, char *changes,
 								char **splitter);
 int							create_executor(char *command);
 void						sigint_handler(int signal);
-int							exec(char **str);
 int							expand_path(char *str);
 t_pair						*get_env(char **envp);
-void						cleanup(t_data *data);
 void						free_nodes(t_node *node);
 void						print_pairs(t_pair *pair);
 void						free_pairs(t_pair *pair);
@@ -146,8 +144,6 @@ void						init_cmd_lst(t_command_list *cmd_lst);
 int							check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes,
 								int i);
 void						free_path(char **path);
-void						sigintchild_handler(int singal);
-void						expand(t_arg *arg);
 int							replace_var(t_pair *env, char *str);
 int							add_to_list(char *str, t_pair *exported_vars);
 int							check_dupes(t_pair *env, char *str);

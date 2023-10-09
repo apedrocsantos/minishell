@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/08 12:24:08 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:28:26 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,7 @@ int	print_sorted_all(t_pair *env, t_pair *exported_vars)
 
 	export = copy_list_all(env, exported_vars);
 	sort_list(&export);
-	printf("%s\n", export->key);
 	temp_export = export;
-	// printf("HEEEEE %s", temp_export->key);
 	while (temp_export)
 	{
 		if (ft_strchr(temp_export->key, '='))
@@ -146,7 +144,7 @@ int	print_sorted_all(t_pair *env, t_pair *exported_vars)
 }
 
 /*
-If string doesn't start with an alphanum char or with a '_', return (error); OK
+If string doesn't start with an alphanum char or with a '_', return error
 
 If string doesn't have a '='
 	if string is not in env list && string is not in exported list
@@ -155,44 +153,38 @@ If string doesn't have a '='
 If string has a '=':
 	if string is in env list
 		replace value
-	else if string is not in env list
+	else
 		if string is in exported list
 			replace string
 		else
-			add to exported vars
+			add to exported list
  */
 
 int	export(t_data *data, char **str)
 {
-	t_pair	*env;
-	t_pair	*exported_vars;
 	int		i;
 	int		j;
 
-	env = data->env;
-	exported_vars = data->exported_vars;
 	i = -1;
 	if (!*str)
-		return (print_sorted_all(env, exported_vars));
+		return (print_sorted_all(data->env, data->exported_vars));
 	while (str[++i])
 	{
 		if (!ft_isalpha(*str[i]))
 			return (print_export_error(data, str[i]));
 		j = -1;
 		while (str[i][++j])
-		{
 			if (!ft_isalnum(str[i][j]) && str[i][j] != '_' && str[i][j] != '=')
 				return (print_export_error(data, str[i]));
-		}
-		if (!ft_strchr(str[i], '=') && (!check_dupes(env, str[i])
-				&& !check_dupes(exported_vars, str[i])))
-			return (add_to_list(str[i], exported_vars));
-		if (ft_strchr(str[i], '=') && check_dupes(env, str[i]))
-			return (replace_var(env, str[i]));
-		if (ft_strchr(str[i], '=') && check_dupes(exported_vars, str[i]))
-			return (replace_var(exported_vars, str[i]));
-		if (ft_strchr(str[i], '='))
-			return (add_to_list(str[i], exported_vars));
+		if (!ft_strchr(str[i], '=') && (!check_dupes(data->env, str[i])
+				&& !check_dupes(data->exported_vars, str[i])))
+			add_to_list(str[i], data->exported_vars);
+		else if (ft_strchr(str[i], '=') && check_dupes(data->env, str[i]))
+			replace_var(data->env, str[i]);
+		else if (ft_strchr(str[i], '=') && check_dupes(data->exported_vars, str[i]))
+			replace_var(data->exported_vars, str[i]);
+		else if (ft_strchr(str[i], '='))
+			add_to_list(str[i], data->exported_vars);
 	}
 	return (0);
 }

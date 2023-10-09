@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:04:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/08 11:13:42 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:03:41 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ int	check_end_of_command(t_data *data, char *str)
 			return (print_syntax_error(data, str[i + 1]));
 		break ;
 	}
+	return (0);
+}
+
+int	check_pipes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != '\'' && str[i] != '"' && str[i] != '|')
+		i++;
+	if (str[i] == '|')
+		return (1);
 	return (0);
 }
 
@@ -67,6 +79,9 @@ int	token_error(t_data *data, char *str, int *i)
 			j += 1;
 		if (j && check_unexpected_token(data, &str[*i + j]))
 			return (2);
+		else if (str[*i] == '|')
+			if (check_pipes(&str[*i + 1]))
+				return (print_syntax_error(data, str[*i]));
 		(*i)++;
 	}
 	return (0);

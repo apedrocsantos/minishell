@@ -9,6 +9,7 @@ void	terminal_prompt(void)
 	rl_redisplay();
 }
 
+
 void	sigint_handler(int signal)
 {
 	if (signal && g_signal == 0)
@@ -19,8 +20,9 @@ void	sigint_handler(int signal)
 
 void heredoc_sigint_handler(int signal)
 {
-	if (signal && !g_signal)
-		exit(1);
-	// if (signal && g_signal == 0)
-	// 	printf("\n");
+	if (signal)
+	{
+		printf("\n");
+		g_signal = -10;
+	}
 }

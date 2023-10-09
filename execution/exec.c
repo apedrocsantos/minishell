@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/08 11:33:58 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:53:53 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 				close(pipes->fd[1]);
 			data->exit_status = 1;
 		}
-		else if (arg_list && !is_builtin(data, arg_list))
+		else if (arg_list && g_signal != -10 && !is_builtin(data, arg_list))
 			execute_execve(data, cmd_lst, arg_list, 0);
 		revert_fds(cmd_lst);
 		free_cmd(arg_list, cmd_lst);
