@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:04:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 11:03:41 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:20:55 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	check_pipes(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] != '\'' && str[i] != '"' && str[i] != '|')
+	while (str[i] && str[i] != '\'' && str[i] != '"' && str[i] != ' ' && str[i] != '|')
 		i++;
 	if (str[i] == '|')
 		return (1);

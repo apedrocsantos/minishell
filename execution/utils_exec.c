@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/08 10:24:01 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:12:01 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	**get_path(t_data *data)
 {
 	t_pair	*temp;
 
+	printf("HERE\n");
 	if (data->path)
 	{
 		free_path(data->path);
@@ -80,6 +81,7 @@ char	**get_path(t_data *data)
 	temp = data->env;
 	while (temp)
 	{
+		printf("%s\n", temp->key);
 		if (!ft_strncmp(temp->key, "PATH=", 5))
 			return (ft_split(temp->value, ':'));
 		temp = temp->next;
@@ -95,7 +97,7 @@ int	check_path(t_data *data, t_command_list *cmd_lst, char **str, int i)
 
 	data->path = get_path(data);
 	path = data->path;
-	if (!*path || !str)
+	if (!path || !*path || !str)
 		return (0);
 	if (**str == '/')
 	{

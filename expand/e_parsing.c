@@ -6,11 +6,29 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 13:00:45 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:59:54 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*c_strdup(const char *s, char *freeit)
+{
+	char	*str;
+	int		length;
+	int		i;
+
+	length = ft_strlen(s);
+	i = -1;
+	str = (char *)malloc(sizeof(char) * (length + 1));
+    free(freeit);
+	if (!str)
+		return (NULL);
+	while (s && s[++i])
+		str[i] = s[i];
+	str[length] = '\0';
+	return (str);
+}
 
 char *c_strjoin(char *str, char *s)
 {
@@ -32,7 +50,8 @@ char *c_strjoin(char *str, char *s)
         result[j] = '\0';
     }
     free(str);
-    free(s);
+    if (s != NULL)
+        free(s);
     return (result);
 }
 
@@ -46,29 +65,26 @@ char    *ft_append(char *s, char c)
         temp[i] = s[i];
     temp[i++] = c;
     temp[i] = '\0';
+    free(s);
     return (temp);
 }
 char *search_key(t_data *data, char *str)
 {
     t_pair *temp;
     char    *temp1;
-    temp = data->env;
 
+    temp = data->env;
+    if (!*(str + 1))
+        return (c_strdup("$", str));
     temp1 = ft_append(str, '=');
     while (temp)
     {
-        if (ft_strchr(str, '$'))
+        if (*(temp1 + 1) && !ft_strncmp(&temp1[1], temp->key, ft_strlen(&temp1[1])))
+            return (c_strdup(temp->value, temp1));
+        else if (*(temp1 + 1) && *(temp1 + 1) == '?')
         {
-            if (*(temp1 + 1) && !ft_strncmp(&temp1[1], temp->key, ft_strlen(&temp1[1])))
-            {
-                free(temp1);
-                return (ft_strdup(temp->value));
-            }
-            else if (*(str + 1) && *(str + 1) == '?')
-            {
-                free(temp1);
-                return (ft_itoa(data->exit_status));
-            }
+            free(temp1);
+            return (ft_itoa(data->exit_status));
         }
         temp = temp->next;
     }
@@ -118,11 +134,12 @@ char *solve_expansion(t_data *data, char *temp, int c)
         if (ft_strchr(trying[i], '$') && flag != '\'')
             final = c_strjoin(final, search_key(data, trying[i]));
         else if(parse(trying, i, &flag))
-        {
             final = c_strjoin(final, trying[i]);
-        }
         else
+        {
+            final = c_strjoin(final, NULL);
             free(trying[i]);
+        }
     }
     free(trying);
     return (final);

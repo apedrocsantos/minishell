@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 11:28:26 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:09:19 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,15 @@ int	export(t_data *data, char **str)
 	i = -1;
 	if (!*str)
 		return (print_sorted_all(data->env, data->exported_vars));
+	if (data->pipes.open)
+		return (0);
 	while (str[++i])
 	{
 		if (!ft_isalpha(*str[i]))
 			return (print_export_error(data, str[i]));
 		j = -1;
 		while (str[i][++j])
-			if (!ft_isalnum(str[i][j]) && str[i][j] != '_' && str[i][j] != '=')
+			if (!ft_isalnum(str[i][j]) && str[i][j] == ' ' && str[i][j] != '=')
 				return (print_export_error(data, str[i]));
 		if (!ft_strchr(str[i], '=') && (!check_dupes(data->env, str[i])
 				&& !check_dupes(data->exported_vars, str[i])))

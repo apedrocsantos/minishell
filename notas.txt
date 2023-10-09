@@ -14,3 +14,4 @@ heredoc - Ctrl-C
 heredoc open fds
 
 ls | > out (should work)
+double free after two unsets
