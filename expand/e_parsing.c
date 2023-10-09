@@ -5,31 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 12:18:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 15:59:54 by anda-cun         ###   ########.fr       */
+/*   Created: 2023/10/09 17:18:30 by anda-cun          #+#    #+#             */
+/*   Updated: 2023/10/09 17:18:31 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*c_strdup(const char *s, char *freeit)
+char    *c_strdup(const char *s, char *freeit)
 {
-	char	*str;
-	int		length;
-	int		i;
-
-	length = ft_strlen(s);
-	i = -1;
-	str = (char *)malloc(sizeof(char) * (length + 1));
+    char    *str;
+    int     length;
+    int     i;
+    length = ft_strlen(s);
+    i = -1;
+    str = (char *)malloc(sizeof(char) * (length + 1));
     free(freeit);
-	if (!str)
-		return (NULL);
-	while (s && s[++i])
-		str[i] = s[i];
-	str[length] = '\0';
-	return (str);
+    if (!str)
+        return (NULL);
+    while (s && s[++i])
+        str[i] = s[i];
+    str[length] = '\0';
+    return (str);
 }
-
 char *c_strjoin(char *str, char *s)
 {
     int i = -1;
@@ -54,7 +51,6 @@ char *c_strjoin(char *str, char *s)
         free(s);
     return (result);
 }
-
 char    *ft_append(char *s, char c)
 {
     char *temp;
@@ -72,7 +68,6 @@ char *search_key(t_data *data, char *str)
 {
     t_pair *temp;
     char    *temp1;
-
     temp = data->env;
     if (!*(str + 1))
         return (c_strdup("$", str));
@@ -91,7 +86,6 @@ char *search_key(t_data *data, char *str)
     free(temp1);
     return (NULL);
 }
-
 int parse(char **trying, int i, char *flag)
 {
     if (*flag)
@@ -115,14 +109,12 @@ int parse(char **trying, int i, char *flag)
             return (1);
     }
 }
-
 char *solve_expansion(t_data *data, char *temp, int c)
 {
     int i;
     char *final;
     char **trying;
     char flag;
-
     flag = 0;
     temp[c] = '\0';
     trying = ft_split(temp, 1);
@@ -144,11 +136,9 @@ char *solve_expansion(t_data *data, char *temp, int c)
     free(trying);
     return (final);
 }
-
 char    *format_expansion(t_data *data, t_arg *arg, int i, int c)
 {
     char *temp;
-
     temp = malloc(ft_strlen(arg->token) * 3 + 1);
     while (arg->token[++i] != '\0')
     {
@@ -173,7 +163,6 @@ char    *format_expansion(t_data *data, t_arg *arg, int i, int c)
     }
    return (solve_expansion(data, temp, c));
 }
-
 void    expand_struct(t_data *data, t_command_list *cmd_lst)
 {
     int i = -1;
@@ -184,6 +173,8 @@ void    expand_struct(t_data *data, t_command_list *cmd_lst)
         {
             temp = cmd_lst->arg[i].token;
             cmd_lst->arg[i].token = format_expansion(data, &(cmd_lst->arg[i]), -1 , 0);
+            if (!ft_strncmp(cmd_lst->arg[i].token, "", ft_strlen(cmd_lst->arg[i].token)) && temp[0] == '$')
+                cmd_lst->arg[i].type = -10;
             free(temp);
         }
         i = -1;
