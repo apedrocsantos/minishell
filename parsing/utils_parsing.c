@@ -12,49 +12,38 @@
 
 #include "minishell.h"
 
-void    iterator(char *line)
+int	token(char *line)
 {
-    int i = 0;
-    while (line[i] != '\0')
-    {
-        printf("Index %d-> {%c}; ", i, line[i]);
-        i++;
-    }
-    printf("\n");
+	if (!line || *line == '\0')
+		return (STR);
+	if (line[0] == '|')
+		return (PIPE);
+	if (line[0] == '>')
+	{
+		if (line[1] && line[1] == '>')
+			return (APPEND);
+		else
+			return (OUT);
+	}
+	if (line[0] == '<')
+	{
+		if (line[1] && line[1] == '<')
+			return (HEREDOC);
+		else
+			return (IN);
+	}
+	if (line[0] == ';')
+		return (END);
+	else
+		return (STR);
 }
 
-int token(char *line)
+int	ft_strleni(char **splitter, int i)
 {
-    if (!line || *line == '\0')
-        return (STR);
-    if (line[0] == '|')
-        return PIPE;
-    if (line[0] == '>')
-    {
-        if (line[1] && line[1]  == '>')
-            return (APPEND);
-        else
-            return (OUT);
-    }
-    if (line[0] == '<')
-    {
-        if (line[1] && line[1] == '<')
-            return (HEREDOC);
-        else
-            return (IN);
-    }
-    if (line[0] == ';')
-        return (END);
-    else
-        return (STR);
-}
+	int	size;
 
-int ft_strleni(char **splitter, int i)
-{
-    int size;
-
-    size = 0;
-    while (splitter[i] && !z_cmp(splitter[i++], "|"))
-        size++;
-    return (size);
+	size = 0;
+	while (splitter[i] && !z_cmp(splitter[i++], "|"))
+		size++;
+	return (size);
 }

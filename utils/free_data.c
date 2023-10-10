@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 06:47:38 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 12:58:38 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 13:31:32 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_path(char **path)
 
 	i = 0;
 	if (!path)
-		return;
+		return ;
 	while (path[i] != NULL)
 		free(path[i++]);
 	free(path);

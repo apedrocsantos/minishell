@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 13:52:21 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 13:24:28 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,47 +42,48 @@ void	init_cmd_lst(t_command_list *cmd_lst)
 	cmd_lst->stdout = dup(STDOUT_FILENO);
 }
 
-void	minishell(t_data *data, char *line)
+void	run(t_data *data, char *line)
 {
 	char			**splitter;
 	char			*changes;
 	t_command_list	*cmd_lst;
 
+	changes = treat_str(line, 0, 0);
+	splitter = ft_split(changes, 2);
+	cmd_lst = malloc(sizeof(t_command_list));
+	cmd_lst->arg = malloc(sizeof(t_arg) * (ft_strleni(splitter, 0) \
+			+ 1));
+	parsing(cmd_lst, splitter, 0);
+	expand_struct(data, cmd_lst);
+	check_cmd(data, cmd_lst, &data->pipes);
+	free_all(cmd_lst, changes, splitter);
+}
+
+void	minishell(t_data *data, char *line)
+{
 	while (data->exit == 0)
 	{
 		if (!line)
 			line = readline("minishell$ ");
 		if (!line)
-		{
-			data->exit = 0;
 			exit_builtin(data, NULL);
-		}
 		else
 		{
 			add_history(line);
 			if (!check_parse_errors(data, line, 0))
-			{
-				changes = treat_str(line, 0, 0);
-				splitter = ft_split(changes, 2);
-				cmd_lst = malloc(sizeof(t_command_list));
-				cmd_lst->arg = malloc(sizeof(t_arg) * (ft_strleni(splitter, 0)
-						+ 1));
-				parsing(cmd_lst, splitter, 0);
-				expand_struct(data, cmd_lst);
-				check_cmd(data, cmd_lst, &data->pipes);
-				free_all(cmd_lst, changes, splitter);
-			}
+				run(data, line);
 		}
 		free(line);
 		line = NULL;
 		g_signal = 0;
 	}
 }
+
 int	main(int ac, char **av, char **envp)
 {
-	char *line;
-	t_data data;
-	int exit_status;
+	char	*line;
+	t_data	data;
+	int		exit_status;
 
 	line = NULL;
 	g_signal = 0;
@@ -96,5 +97,5 @@ int	main(int ac, char **av, char **envp)
 	minishell(&data, line);
 	exit_status = data.exit_status;
 	free_data(&data);
-	return(exit_status);
+	return (exit_status);
 }

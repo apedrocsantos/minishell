@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 20:10:35 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:40:19 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,15 @@ int	check_path(t_data *data, t_command_list *cmd_lst, char **str, int i)
 	char	*path_to_test;
 	char	**path;
 
+	path_to_test = NULL;
 	data->path = get_path(data);
 	path = data->path;
 	if (!path || !*path || !str)
-	{
-		cmd_lst->exec_path = ft_strdup("");
-		return (0);
-	}
+		path_to_test = ft_strdup("");
 	if (**str == '/')
-	{
-		cmd_lst->exec_path = ft_strdup(*str);
+		path_to_test = ft_strdup(*str);
+	if (path_to_test)
 		return (0);
-	}
 	while (path[++i])
 	{
 		temp = ft_strjoin(path[i], "/");

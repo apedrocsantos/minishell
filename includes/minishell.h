@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/10 13:28:51 by anda-cun          #+#    #+#             */
+/*   Updated: 2023/10/10 13:29:05 by anda-cun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -16,15 +28,23 @@
 
 extern int					g_signal;
 
-enum						tokens
+/*STR,     str
+	IN,      <
+	OUT,     >
+	APPEND,  >>
+	HEREDOC, <<
+	PIPE,    |
+	END,     ; (end of command)*/
+
+enum						e_tokens
 {
-	STR,     // str
-	IN,      // <
-	OUT,     // >
-	APPEND,  // >>
-	HEREDOC, // <<
-	PIPE,    // |
-	END,     // ; (end of command)
+	STR,
+	IN,
+	OUT,
+	APPEND,
+	HEREDOC,
+	PIPE,
+	END,
 };
 
 typedef struct s_node
@@ -96,6 +116,8 @@ int							is_builtin(t_data *data, char **args);
 void						print_exported(t_node *node);
 int							print_export_error(t_data *data, char *str);
 size_t						len_to_char(char *str, char c);
+int							check_dupes(t_pair *env, char *str);
+int							add_to_list(char *str, t_pair *exported_vars);
 
 /*PARSING*/
 int							check_parse_errors(t_data *data, char *str, int i);
@@ -147,11 +169,14 @@ int							check_fds(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes, int i);
 void						free_path(char **path);
 int							replace_var(t_pair *env, char *str);
-int							add_to_list(char *str, t_pair *exported_vars);
-int							check_dupes(t_pair *env, char *str);
 void						heredoc_sigint_handler(int signal);
 void						expand_struct(t_data *data,
 								t_command_list *cmd_lst);
 int							is_valid(char *str);
+char						*c_strdup(const char *s, char *freeit);
+char						*c_strjoin(char *str, char *s);
+int							parse(char **trying, int i, char *flag);
+int							should_break(t_arg *arg, int i);
+char						*ft_append(char *s, char c);
 
 #endif

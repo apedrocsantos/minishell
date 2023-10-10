@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fds_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 09:43:17 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 10:51:11 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:39:24 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,11 @@ int	assign_fds(int in_fd, int out_fd)
 	if (in_fd != -1)
 	{
 		dup2(in_fd, STDIN_FILENO);
-		fprintf(stderr, "closing in %d\n", in_fd);
 		close(in_fd);
 	}
 	if (out_fd != -1)
 	{
 		dup2(out_fd, STDOUT_FILENO);
-		fprintf(stderr, "closing out %d\n", out_fd);
 		close(out_fd);
 	}
 	return (0);

@@ -15,10 +15,10 @@
 
 #include "minishell.h"
 
-
 void	free_linkedlst(t_command_list *cmd_lst)
 {
-	t_command_list *to_clean;
+	t_command_list	*to_clean;
+
 	to_clean = NULL;
 	if (cmd_lst->next != NULL)
 		to_clean = cmd_lst->next;
@@ -29,7 +29,7 @@ void	free_linkedlst(t_command_list *cmd_lst)
 
 void	free_args(t_arg *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arg[i].token != NULL)
@@ -40,14 +40,14 @@ void	free_args(t_arg *arg)
 	free(arg);
 }
 
-void free_splitter(char **str)
+void	free_splitter(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		free (str[i]);
+		free(str[i]);
 		i++;
 	}
 	free(str);
@@ -58,5 +58,4 @@ void	free_all(t_command_list *cmd_lst, char *changes, char **splitter)
 	free_linkedlst(cmd_lst);
 	free(changes);
 	free_splitter(splitter);
-	// free history?
 }

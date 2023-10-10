@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 11:41:40 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 10:08:47 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:56:25 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,6 @@ int	echo(t_data *data, char **str)
 	newline = 1;
 	if (!*str)
 		return (ft_putendl_fd("", 1));
-	if (!ft_strncmp(str[0], "$?", 2))
-	{
-		ft_putnbr_fd(data->exit_status, 1);
-		ft_putendl_fd("", 1);
-		data->exit_status = 0;
-		return (0);
-	}
 	if (!ft_strncmp(str[0], "-n", 2))
 	{
 		while (str[0][1 + i] == 'n')
@@ -63,9 +56,3 @@ int	echo(t_data *data, char **str)
 	data->exit_status = write_string(&str[j], newline);
 	return (0);
 }
-
-// int main(int ac, char **av)
-// {
-//     if (ac == 2)
-//         return(echo(av[1]));
-// }

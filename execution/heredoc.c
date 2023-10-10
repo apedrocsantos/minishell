@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:59 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 10:40:56 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:43:00 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_heredoc_error(char *str)
 {
-	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `",
-		2);
+	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file \
+		(wanted `", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd("')", 2);
 }
@@ -40,10 +40,26 @@ void	do_heredoc(t_data *data, int fd, char *heredoc, char *eof)
 	}
 	if (data->pipes.open)
 	{
+		fprintf(stderr, "closing %d and %d\n", data->pipes.fd[0],
+			data->pipes.fd[1]);
 		close(data->pipes.fd[0]);
 		close(data->pipes.fd[1]);
 	}
+	close(fd);
 	free(heredoc);
+}
+
+int	open_hd(void)
+{
+	int	fd;
+
+	fd = open("heredoc_163465", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (fd == -1)
+	{
+		ft_putendl_fd("Error opening heredoc file", 2);
+		return (-1);
+	}
+	return (fd);
 }
 
 int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
@@ -52,29 +68,19 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 	int		fd;
 	int		pid;
 
-	if (!access("heredoc_163465", O_RDONLY))
-		unlink("heredoc_163465");
 	pid = fork();
 	if (pid == -1)
 		return (ft_putendl_fd("Error forking", 2));
 	if (pid != 0)
-	{
-		add_pid(data, pid, cmd_lst);
 		signal(SIGINT, heredoc_sigint_handler);
-	}
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		heredoc = ft_strdup("");
-		fd = open("heredoc_163465", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		fd = open_hd();
 		if (fd == -1)
-		{
-			ft_putendl_fd("Error opening heredoc file", 2);
-			return (1);
-		}
+			return (-1);
 		do_heredoc(data, fd, heredoc, eof);
-		close(fd);
-		(void)cmd_lst;
 		revert_fds(cmd_lst);
 		exit(0);
 	}

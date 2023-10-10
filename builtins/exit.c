@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 21:07:29 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 10:16:57 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:20:56 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	exit_builtin(t_data *data, char **str)
 {
 	unsigned char	ret;
 
+	if (!str)
+		data->exit = 0;
 	if (!data->pipes.open)
 	{
 		ft_putendl_fd("exit", 2);

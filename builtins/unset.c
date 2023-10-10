@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:43:40 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 20:50:25 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 13:01:38 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@ size_t	len_to_char(char *str, char c)
 	return (len);
 }
 
+int	remove_aux(t_pair *cur, t_pair *prev)
+{
+	free(cur->key);
+	cur->key = NULL;
+	free(cur->value);
+	cur->value = NULL;
+	if (!prev)
+	{
+		prev = cur;
+		if (prev->next)
+		{
+			cur = cur->next;
+			free(prev);
+		}
+		prev = NULL;
+		return (1);
+	}
+	return (0);
+}
+
 int	remove_from_list(char *str, t_pair *pair)
 {
 	t_pair	*cur;
@@ -40,21 +60,7 @@ int	remove_from_list(char *str, t_pair *pair)
 		if (!ft_strncmp(str, cur->key, ft_strlen(str))
 			&& (!cur->key[ft_strlen(str)] || cur->key[ft_strlen(str)] == '='))
 		{
-			free(cur->key);
-			cur->key = NULL;
-			free(cur->value);
-			cur->value = NULL;
-			if (!prev)
-			{
-				prev = cur;
-				if (prev->next)
-				{
-					cur = cur->next;
-					free(prev);
-				}
-				prev = NULL;
-			}
-			else
+			if (!remove_aux(cur, prev))
 			{
 				prev->next = cur->next;
 				if (cur->next)
