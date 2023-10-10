@@ -14,5 +14,5 @@ heredoc - Ctrl-C
 heredoc open fds
 
 ls | > out (should work)
-double free after two unsets
-multiple heredocs
+double free after two unsets?
+expander should also look in exported_vars

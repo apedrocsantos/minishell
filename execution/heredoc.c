@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:59 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 23:00:04 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:35:58 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 	int		fd;
 	int		pid;
 
+	if (!access("heredoc_163465", O_RDONLY))
+			unlink("heredoc_163465");
 	pid = fork();
 	if (pid == -1)
 		return (ft_putendl_fd("Error forking", 2));
@@ -76,7 +78,7 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 		revert_fds(cmd_lst);
 		exit(0);
 	}
-	wait(NULL);
+	waitpid(pid, NULL, 0);
 	signal(SIGINT, sigint_handler);
 	return (0);
 }
