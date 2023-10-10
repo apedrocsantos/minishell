@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:59 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 10:35:58 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:40:56 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 	int		pid;
 
 	if (!access("heredoc_163465", O_RDONLY))
-			unlink("heredoc_163465");
+		unlink("heredoc_163465");
 	pid = fork();
 	if (pid == -1)
 		return (ft_putendl_fd("Error forking", 2));

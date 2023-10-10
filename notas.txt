@@ -6,13 +6,5 @@ norminette
 check mem leaks
 
 Tests:
-Empty command ("" or "" echo...) should return error
-cat /dev/random | head
-cd -
-export HELLO="123 A-"
-heredoc - Ctrl-C
 heredoc open fds
-
-ls | > out (should work)
-double free after two unsets?
 expander should also look in exported_vars
