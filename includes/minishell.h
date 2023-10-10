@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:28:51 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 13:29:05 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:27:43 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ enum						e_tokens
 	HEREDOC,
 	PIPE,
 	END,
+	EXEC,
 };
 
 typedef struct s_node
@@ -134,6 +135,8 @@ int							assign_fds(int in_fd, int out_fd);
 void						add_pid(t_data *data, int pid,
 								t_command_list *cmd_lst);
 void						free_pid(t_data *data);
+char						**get_env_list(t_pair *env, t_pair *exported_vars);
+void						wait_for_execve(t_data *data, int *status);
 
 void						print_struct(t_command_list *lst);
 int							z_cmp(char *str, char *cmp);

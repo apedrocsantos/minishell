@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 10:56:07 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:15:58 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes, int i)
 
 int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args, int pid)
 {
+	char	**env_list;
+
 	pid = fork();
 	if (pid == -1)
 	{
@@ -66,13 +68,15 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args, int pid)
 	}
 	if (pid == 0)
 	{
+		g_signal = 0;
 		signal(SIGINT, SIG_DFL);
-		if (execve(cmd_lst->exec_path, args, NULL) == -1)
+		env_list = get_env_list(data->env, data->exported_vars);
+		if (execve(cmd_lst->exec_path, args, env_list) == -1)
 		{
 			if (data->pipes.open)
 				close(data->pipes.fd[0]);
 			revert_fds(cmd_lst);
-			ft_putstr_fd(cmd_lst->arg->token, 2);
+			ft_putstr_fd(*args, 2);
 			ft_putendl_fd(": command not found", 2);
 			exit(127);
 		}

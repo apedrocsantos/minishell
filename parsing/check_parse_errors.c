@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_parse_errors.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:04:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 13:21:58 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:40:00 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ int	check_end_of_command(t_data *data, char *str)
 {
 	int	i;
 
+	if (!str)
+		return (0);
 	i = ft_strlen(str);
 	i--;
-	while (str[i] && str[i] != '\'' && str[i] != '"')
+	while (i > 0 && str[i] && str[i] != '\'' && str[i] != '"')
 	{
 		while (str[i] == ' ')
 			i--;

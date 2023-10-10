@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 11:48:32 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/04/24 12:24:52 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:05:17 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	count_substr(char const *s, char c)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (*s)
 	{
 		while (*s == c)

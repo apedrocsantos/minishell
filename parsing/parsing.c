@@ -30,7 +30,7 @@ char	*treat_str(char *line, char aspas, int j)
 {
 	char	*newline;
 
-	newline = malloc(ft_strlen(line) * 5);
+	newline = malloc(ft_strlen(line) * 5 + 1);
 	while (*line != '\0')
 	{
 		if (!aspas && (*line == '"' || *line == '\''))
@@ -50,7 +50,7 @@ char	*treat_str(char *line, char aspas, int j)
 		else
 			newline[j++] = *line++;
 	}
-	newline[j++] = '\0';
+	newline[j] = '\0';
 	return (newline);
 }
 
@@ -82,16 +82,22 @@ void	parsing(t_command_list *cmd_lst, char **splitter, int i)
 	j = 0;
 	while (splitter[i] && !z_cmp(splitter[i], "|") && !z_cmp(splitter[i], ";"))
 	{
-		if (token(splitter[i]) != 0 && splitter[i + 1])
+		if (!ft_strncmp("./", splitter[i], 2) || !ft_strncmp("/", \
+			splitter[i], 1))
 		{
-			cmd_lst->arg[j].token = ft_strdup(splitter[i + 1]);
+			cmd_lst->arg[j].token = ft_strdup(splitter[i]);
+			cmd_lst->arg[j].type = EXEC;
+		}
+		else if (token(splitter[i]) != STR && splitter[i + 1])
+		{
 			cmd_lst->arg[j].type = token(splitter[i]);
+			cmd_lst->arg[j].token = ft_strdup(splitter[i + 1]);
 			i++;
 		}
 		else
 		{
-			cmd_lst->arg[j].token = ft_strdup(splitter[i]);
 			cmd_lst->arg[j].type = token(splitter[i]);
+			cmd_lst->arg[j].token = ft_strdup(splitter[i]);
 		}
 		j++;
 		i++;
