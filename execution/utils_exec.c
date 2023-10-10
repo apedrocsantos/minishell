@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 10:04:18 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 16:54:16 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 20:10:35 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ int	check_path(t_data *data, t_command_list *cmd_lst, char **str, int i)
 	data->path = get_path(data);
 	path = data->path;
 	if (!path || !*path || !str)
+	{
+		cmd_lst->exec_path = ft_strdup("");
 		return (0);
+	}
 	if (**str == '/')
 	{
 		cmd_lst->exec_path = ft_strdup(*str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:59 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 13:49:30 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 23:00:04 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	print_heredoc_error(char *str)
 {
-	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `",
+		2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd("')", 2);
 }
@@ -37,8 +38,11 @@ void	do_heredoc(t_data *data, int fd, char *heredoc, char *eof)
 			write(fd, out, ft_strlen(out));
 		free(out);
 	}
-	close(data->pipes.fd[0]);
-	close(data->pipes.fd[1]);
+	if (data->pipes.open)
+	{
+		close(data->pipes.fd[0]);
+		close(data->pipes.fd[1]);
+	}
 	free(heredoc);
 }
 
@@ -68,7 +72,7 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 		}
 		do_heredoc(data, fd, heredoc, eof);
 		close(fd);
-		(void) cmd_lst;
+		(void)cmd_lst;
 		revert_fds(cmd_lst);
 		exit(0);
 	}

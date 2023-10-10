@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 17:57:33 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 10:08:56 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:20:11 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,16 @@ int	print_export_error(t_data *data, char *str)
 	return (0);
 }
 
-// int	has_equal(t_pair *env, t_pair *exported_vars, char *str)
-// {
-//     t_pair *temp_env;
-//     t_pair *temp_exp;
+int is_valid(char *str)
+{
+	int i;
 
-//     temp_env = env;
-//     temp_exp = exported_vars;
-// 	if (check_dupes(temp_env, str))
-// 		replace_var(temp_env, str);
-// 	else if (check_dupes(temp_exp, str))
-// 		replace_var(temp_exp, str);
-// 	else
-// 		add_to_list(str, temp_exp);
-//     return (0);
-// }
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if(!ft_isalnum(str[i]) || str[i] == ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}

@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:43:40 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/05 10:08:05 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 20:50:25 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,18 @@ int	remove_from_list(char *str, t_pair *pair)
 			&& (!cur->key[ft_strlen(str)] || cur->key[ft_strlen(str)] == '='))
 		{
 			free(cur->key);
+			cur->key = NULL;
 			free(cur->value);
+			cur->value = NULL;
 			if (!prev)
 			{
 				prev = cur;
-				cur = cur->next;
-				free(prev);
+				if (prev->next)
+				{
+					cur = cur->next;
+					free(prev);
+				}
+				prev = NULL;
 			}
 			else
 			{

@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 11:53:27 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/09/30 21:10:24 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:37:01 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ char	*get_home(t_data *data)
 	t_pair	*temp;
 
 	temp = data->env;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->key, "HOME=", 6))
+			return (temp->value);
+		temp = temp->next;
+	}
+	temp = data->exported_vars;
 	while (temp)
 	{
 		if (!ft_strncmp(temp->key, "HOME=", 6))

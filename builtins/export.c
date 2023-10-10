@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 19:59:30 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/09 16:09:19 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:19:09 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_pair	*copy_list_all(t_pair *env, t_pair *exported_vars)
 {
 	t_pair	*temp_env;
 	t_pair	*temp_export;
-	t_pair *rtn;
+	t_pair	*rtn;
 
 	temp_export = malloc(sizeof(t_pair));
 	rtn = temp_export;
@@ -162,8 +162,7 @@ If string has a '=':
 
 int	export(t_data *data, char **str)
 {
-	int		i;
-	int		j;
+	int	i;
 
 	i = -1;
 	if (!*str)
@@ -174,16 +173,17 @@ int	export(t_data *data, char **str)
 	{
 		if (!ft_isalpha(*str[i]))
 			return (print_export_error(data, str[i]));
-		j = -1;
-		while (str[i][++j])
-			if (!ft_isalnum(str[i][j]) && str[i][j] == ' ' && str[i][j] != '=')
-				return (print_export_error(data, str[i]));
+		if (!is_valid(str[i]))
+			// if (!ft_isalnum(str[i][j]) && str[i][j] == ' '
+				// && str[i][j] != '=')
+			return (print_export_error(data, str[i]));
 		if (!ft_strchr(str[i], '=') && (!check_dupes(data->env, str[i])
 				&& !check_dupes(data->exported_vars, str[i])))
 			add_to_list(str[i], data->exported_vars);
 		else if (ft_strchr(str[i], '=') && check_dupes(data->env, str[i]))
 			replace_var(data->env, str[i]);
-		else if (ft_strchr(str[i], '=') && check_dupes(data->exported_vars, str[i]))
+		else if (ft_strchr(str[i], '=') && check_dupes(data->exported_vars,
+				str[i]))
 			replace_var(data->exported_vars, str[i]);
 		else if (ft_strchr(str[i], '='))
 			add_to_list(str[i], data->exported_vars);
