@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:28:51 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:27:43 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:05:43 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int							add_to_list(char *str, t_pair *exported_vars);
 /*PARSING*/
 int							check_parse_errors(t_data *data, char *str, int i);
 void						parsing(t_command_list *cmd_lst, char **splitter,
-								int i);
+								int i, int j);
 char						*treat_str(char *line, char aspas, int j);
 int							ft_strleni(char **splitter, int i);
 int							token(char *line);
@@ -137,6 +137,8 @@ void						add_pid(t_data *data, int pid,
 void						free_pid(t_data *data);
 char						**get_env_list(t_pair *env, t_pair *exported_vars);
 void						wait_for_execve(t_data *data, int *status);
+void						wait_for_execve(t_data *data, int *status);
+void						create_list(t_arg *arg, char **arg_list);
 
 void						print_struct(t_command_list *lst);
 int							z_cmp(char *str, char *cmp);
@@ -158,7 +160,8 @@ int							mini_heredoc(t_data *data, char *str,
 int							check_cmd(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes);
 char						*get_next_line(int fd);
-char						**get_arg_list(t_arg *arg);
+char						**get_arg_list(t_arg *arg, int flag, int i,
+								int len);
 int							open_file(int *fd, char *filename, int flags,
 								int perms);
 void						revert_fds(t_command_list *cmd_lst);

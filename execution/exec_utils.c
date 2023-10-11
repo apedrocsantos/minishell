@@ -6,22 +6,16 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 19:09:01 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 19:09:48 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:02:44 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_env_list(t_pair *env, t_pair *exported_vars)
+int	get_len(t_pair *temp_env, t_pair *temp_exported)
 {
-	char	**env_list;
-	int		len;
-	t_pair	*temp_env;
-	t_pair	*temp_exported;
-	int		i;
+	int	len;
 
-	temp_env = env;
-	temp_exported = exported_vars;
 	len = 0;
 	while (temp_env)
 	{
@@ -33,6 +27,16 @@ char	**get_env_list(t_pair *env, t_pair *exported_vars)
 		temp_exported = temp_exported->next;
 		len++;
 	}
+	return (len);
+}
+
+char	**get_env_list(t_pair *env, t_pair *exported_vars)
+{
+	char	**env_list;
+	int		len;
+	int		i;
+
+	len = get_len(env, exported_vars);
 	env_list = ft_calloc(len + 1, sizeof(t_pair));
 	env_list[len] = NULL;
 	i = 0;
@@ -53,4 +57,35 @@ char	**get_env_list(t_pair *env, t_pair *exported_vars)
 		i++;
 	}
 	return (env_list);
+}
+
+void	wait_for_execve(t_data *data, int *status)
+{
+	t_pid	*pid;
+
+	pid = data->pid;
+	data->pipes.open = 0;
+	while (pid->value != 0)
+	{
+		waitpid(pid->value, status, 0);
+		if (pid->value == data->pid->value && pid->last)
+			data->exit_status = WEXITSTATUS(*status);
+		pid = pid->next;
+		g_signal--;
+	}
+	free_pid(data);
+}
+
+void	create_list(t_arg *arg, char **arg_list)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	while (arg[++i].token != NULL)
+	{
+		if (arg[i].type == STR || arg[i].type == EXEC)
+			arg_list[j++] = arg[i].token;
+	}
 }

@@ -64,7 +64,7 @@ void	solve_rest(t_command_list *cmd_lst, char **splitter, int i)
 		cmd_newlst->arg = malloc(sizeof(t_arg) * \
 			(ft_strleni(splitter, ++i) + 1));
 		cmd_lst->next = cmd_newlst;
-		parsing(cmd_newlst, splitter, i);
+		parsing(cmd_newlst, splitter, i, 0);
 	}
 	else if (splitter[i] && z_cmp(splitter[i], ";"))
 	{
@@ -75,11 +75,8 @@ void	solve_rest(t_command_list *cmd_lst, char **splitter, int i)
 		cmd_lst->next = NULL;
 }
 
-void	parsing(t_command_list *cmd_lst, char **splitter, int i)
+void	parsing(t_command_list *cmd_lst, char **splitter, int i, int j)
 {
-	int	j;
-
-	j = 0;
 	while (splitter[i] && !z_cmp(splitter[i], "|") && !z_cmp(splitter[i], ";"))
 	{
 		if (!ft_strncmp("./", splitter[i], 2) || !ft_strncmp("/", \

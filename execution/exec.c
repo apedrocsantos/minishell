@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:15:58 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:02:13 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ int	check_fds(t_data *data, t_command_list *cmd_lst, t_pipe *pipes, int i)
 	return (assign_fds(cmd_lst->in_fd, cmd_lst->out_fd));
 }
 
+void	child_error(t_data *data, t_command_list *cmd_lst, char **args)
+{
+	if (data->pipes.open)
+		close(data->pipes.fd[0]);
+	revert_fds(cmd_lst);
+	ft_putstr_fd(*args, 2);
+	ft_putendl_fd(": command not found", 2);
+	exit(127);
+}
+
 int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args, int pid)
 {
 	char	**env_list;
@@ -72,33 +82,9 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args, int pid)
 		signal(SIGINT, SIG_DFL);
 		env_list = get_env_list(data->env, data->exported_vars);
 		if (execve(cmd_lst->exec_path, args, env_list) == -1)
-		{
-			if (data->pipes.open)
-				close(data->pipes.fd[0]);
-			revert_fds(cmd_lst);
-			ft_putstr_fd(*args, 2);
-			ft_putendl_fd(": command not found", 2);
-			exit(127);
-		}
+			child_error(data, cmd_lst, args);
 	}
 	return (0);
-}
-
-void	wait_for_execve(t_data *data, int *status)
-{
-	t_pid	*pid;
-
-	pid = data->pid;
-	data->pipes.open = 0;
-	while (pid->value != 0)
-	{
-		waitpid(pid->value, status, 0);
-		if (pid->value == data->pid->value && pid->last)
-			data->exit_status = WEXITSTATUS(*status);
-		pid = pid->next;
-		g_signal--;
-	}
-	free_pid(data);
 }
 
 int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
@@ -111,7 +97,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 	while (cmd_lst)
 	{
 		init_cmd_lst(cmd_lst);
-		arg_list = get_arg_list(cmd_lst->arg);
+		arg_list = get_arg_list(cmd_lst->arg, 0, -1, 0);
 		check_path(data, cmd_lst, arg_list, -1);
 		if (check_fds(data, cmd_lst, pipes, 0) != 0)
 		{
