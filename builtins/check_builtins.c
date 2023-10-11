@@ -6,7 +6,7 @@
 /*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:04:34 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 11:57:06 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 10:46:42 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	is_builtin(t_data *data, char **args)
 	i = -1;
 	while (++i < 7)
 	{
-		if (!ft_strncmp(functions[i], *args, ft_strlen(functions[i]))
-			&& !args[0][ft_strlen(functions[i])])
+		if (args && *args && !ft_strncmp(functions[i], *args,
+				ft_strlen(functions[i])) && !args[0][ft_strlen(functions[i])])
 		{
 			(*fun_ptr_arr[i])(data, &args[1]);
 			return (1);

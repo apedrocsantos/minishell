@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:47:26 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:14:59 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 11:23:18 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,31 @@
 
 int		g_signal;
 
-void	init(t_data *data, char **envp)
+int	init(t_data *data, char **envp)
 {
+	data->env = NULL;
 	data->env = get_env(envp);
 	data->exported_vars = malloc(sizeof(t_pair));
+	if (!data->exported_vars)
+		return (1);
 	data->exported_vars->key = NULL;
 	data->exported_vars->value = NULL;
 	data->exported_vars->next = NULL;
 	data->pipes.open = 0;
 	data->pipes.next = malloc(sizeof(t_pipe));
+	if (!data->pipes.next)
+		return (1);
 	data->pipes.next->next = &data->pipes;
 	data->path = NULL;
 	data->pid = malloc(sizeof(t_pid));
+	if (!data->pid)
+		return (1);
 	data->pid->value = 0;
 	data->pid->next = NULL;
 	data->exit_status = 0;
 	data->exit = 0;
 	getcwd(data->cwd, PATH_MAX);
+	return (0);
 }
 
 void	init_cmd_lst(t_command_list *cmd_lst)
@@ -50,12 +58,16 @@ void	run(t_data *data, char *line)
 
 	changes = treat_str(line, 0, 0);
 	splitter = ft_split(changes, 2);
+	cmd_lst = NULL;
 	cmd_lst = malloc(sizeof(t_command_list));
-	cmd_lst->arg = malloc(sizeof(t_arg) * (ft_strleni(splitter, 0) \
-			+ 1));
-	parsing(cmd_lst, splitter, 0);
-	expand_struct(data, cmd_lst);
-	check_cmd(data, cmd_lst, &data->pipes);
+	if (cmd_lst)
+		cmd_lst->arg = ft_calloc((ft_strleni(splitter, 0) + 1), sizeof(t_arg));
+	if (cmd_lst->arg)
+	{
+		parsing(cmd_lst, splitter, 0);
+		expand_struct(data, cmd_lst);
+		check_cmd(data, cmd_lst, &data->pipes);
+	}
 	free_all(cmd_lst, changes, splitter);
 }
 
@@ -69,8 +81,10 @@ void	minishell(t_data *data, char *line)
 			exit_builtin(data, NULL);
 		else
 		{
-			add_history(line);
-			if (!check_parse_errors(data, line, 0) && ft_strlen(line) > 0)
+			if (line && *line)
+				add_history(line);
+			if (line && !check_parse_errors(data, line, 0)
+				&& ft_strlen(line) > 0)
 				run(data, line);
 		}
 		free(line);
@@ -91,7 +105,11 @@ int	main(int ac, char **av, char **envp)
 		line = ft_strdup(av[2]);
 	else if (ac != 1)
 		return (ft_putstr_fd("Error: Wrong arguments\n", 1));
-	init(&data, envp);
+	if (init(&data, envp))
+	{
+		free_data(&data);
+		return (ft_putendl_fd("Error initializing data. Exiting", 2));
+	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 	minishell(&data, line);

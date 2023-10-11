@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 16:05:45 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:15:58 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 10:51:44 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,7 @@ int	execute_execve(t_data *data, t_command_list *cmd_lst, char **args, int pid)
 		signal(SIGINT, SIG_DFL);
 		env_list = get_env_list(data->env, data->exported_vars);
 		if (execve(cmd_lst->exec_path, args, env_list) == -1)
-		{
-			if (data->pipes.open)
-				close(data->pipes.fd[0]);
-			revert_fds(cmd_lst);
-			ft_putstr_fd(*args, 2);
-			ft_putendl_fd(": command not found", 2);
-			exit(127);
-		}
+			child_error(data, cmd_lst, args, env_list);
 	}
 	return (0);
 }
@@ -111,7 +104,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 	while (cmd_lst)
 	{
 		init_cmd_lst(cmd_lst);
-		arg_list = get_arg_list(cmd_lst->arg);
+		arg_list = get_arg_list(data, cmd_lst->arg);
 		check_path(data, cmd_lst, arg_list, -1);
 		if (check_fds(data, cmd_lst, pipes, 0) != 0)
 		{
@@ -119,7 +112,7 @@ int	check_cmd(t_data *data, t_command_list *cmd_lst, t_pipe *pipes)
 				close(pipes->fd[1]);
 			data->exit_status = 1;
 		}
-		else if (arg_list && g_signal != -10 && !is_builtin(data, arg_list))
+		else if (g_signal != -10 && !is_builtin(data, arg_list))
 			execute_execve(data, cmd_lst, arg_list, 0);
 		revert_fds(cmd_lst);
 		free_cmd(arg_list, cmd_lst);

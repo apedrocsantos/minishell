@@ -55,7 +55,10 @@ void	free_splitter(char **str)
 
 void	free_all(t_command_list *cmd_lst, char *changes, char **splitter)
 {
-	free_linkedlst(cmd_lst);
-	free(changes);
-	free_splitter(splitter);
+	if (cmd_lst)
+		free_linkedlst(cmd_lst);
+	if (changes)
+		free(changes);
+	if (splitter)
+		free_splitter(splitter);
 }

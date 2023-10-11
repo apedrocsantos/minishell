@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:28:51 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:27:43 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 10:51:52 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,11 @@ void						add_pid(t_data *data, int pid,
 void						free_pid(t_data *data);
 char						**get_env_list(t_pair *env, t_pair *exported_vars);
 void						wait_for_execve(t_data *data, int *status);
+char						**get_arg_list(t_data *data, t_arg *arg);
+void						child_error(t_data *data, t_command_list *cmd_lst,
+								char **args, char **env_list);
+int							check_path(t_data *data, t_command_list *cmd_lst,
+								char **str, int i);
 
 void						print_struct(t_command_list *lst);
 int							z_cmp(char *str, char *cmp);
@@ -158,12 +163,9 @@ int							mini_heredoc(t_data *data, char *str,
 int							check_cmd(t_data *data, t_command_list *cmd_lst,
 								t_pipe *pipes);
 char						*get_next_line(int fd);
-char						**get_arg_list(t_arg *arg);
 int							open_file(int *fd, char *filename, int flags,
 								int perms);
 void						revert_fds(t_command_list *cmd_lst);
-int							check_path(t_data *data, t_command_list *cmd_lst,
-								char **str, int i);
 void						free_data(t_data *data);
 void						free_args(t_arg *arg);
 void						free_cmd(char **arg_list, t_command_list *cmd_lst);

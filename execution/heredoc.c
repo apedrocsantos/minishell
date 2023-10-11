@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anda-cun <anda-cun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anda-cun <anda-cun@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:59 by anda-cun          #+#    #+#             */
-/*   Updated: 2023/10/10 20:15:22 by anda-cun         ###   ########.fr       */
+/*   Updated: 2023/10/11 11:24:29 by anda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	do_heredoc(t_data *data, int fd, char *heredoc, char *eof)
 			write(fd, out, ft_strlen(out));
 		free(out);
 	}
+	(void) data;
 	if (data->pipes.open)
 	{
 		close(data->pipes.fd[0]);
@@ -79,6 +80,7 @@ int	mini_heredoc(t_data *data, char *eof, t_command_list *cmd_lst)
 		if (fd == -1)
 			return (-1);
 		do_heredoc(data, fd, heredoc, eof);
+		(void) cmd_lst;
 		revert_fds(cmd_lst);
 		exit(0);
 	}
